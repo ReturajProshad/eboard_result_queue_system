@@ -24,7 +24,7 @@ class _homePageState extends State<homePage> {
       List<String>.generate(9, (index) => (2016 + index).toString());
   TextEditingController _rollController = TextEditingController();
   TextEditingController _regController = TextEditingController();
-
+  double _changeSizeOfContainer = .60;
   @override
   Widget build(BuildContext context) {
     _deviceHeight = MediaQuery.of(context).size.height;
@@ -86,7 +86,7 @@ class _homePageState extends State<homePage> {
       alignment: Alignment.topCenter,
       child: Container(
           padding: EdgeInsets.only(top: _deviceHeight * .03),
-          height: _deviceHeight * .60,
+          height: _deviceHeight * _changeSizeOfContainer,
           width: _devicWeight * .93,
           decoration: BoxDecoration(
             //color: Color.fromARGB(104, 4, 19, 224),
@@ -96,37 +96,41 @@ class _homePageState extends State<homePage> {
               width: 4.0, // Border width
             ),
           ),
-          child: Column(
-            // mainAxisAlignment: MainAxisAlignment.start,
-            // crossAxisAlignment: CrossAxisAlignment.center,
-            // mainAxisSize: MainAxisSize.max,
-            children: [
-              _buildDropDownFields("Examination", examination, (_selectedItem) {
-                setState(() {
-                  _selectedExamination = _selectedItem;
-                });
-              }),
-              _makeSpace(),
-              _buildDropDownFields("Year", years, (_InputYear) {
-                setState(() {
-                  _selectedYear = _InputYear;
-                });
-              }),
-              _makeSpace(),
-              _buildDropDownFields("Board", Boards, (_input) {
-                setState(() {
-                  _selectedBoard = _input;
-                });
-              }),
-              _makeSpace(),
-              _buildTextField("Roll", _rollController),
-              _makeSpace(),
-              _buildTextField("Registration", _regController),
-              _makeSpace(),
-              _submitAndResetButton(),
-              _makeSpace(),
-              _PoweredByMessage(),
-            ],
+          child: Form(
+            key: _formkey,
+            child: Column(
+              // mainAxisAlignment: MainAxisAlignment.start,
+              // crossAxisAlignment: CrossAxisAlignment.center,
+              // mainAxisSize: MainAxisSize.max,
+              children: [
+                _buildDropDownFields("Examination", examination,
+                    (_selectedItem) {
+                  setState(() {
+                    _selectedExamination = _selectedItem;
+                  });
+                }),
+                _makeSpace(),
+                _buildDropDownFields("Year", years, (_InputYear) {
+                  setState(() {
+                    _selectedYear = _InputYear;
+                  });
+                }),
+                _makeSpace(),
+                _buildDropDownFields("Board", Boards, (_input) {
+                  setState(() {
+                    _selectedBoard = _input;
+                  });
+                }),
+                _makeSpace(),
+                _buildTextField("Roll", _rollController),
+                _makeSpace(),
+                _buildTextField("Registration", _regController),
+                _makeSpace(),
+                _submitAndResetButton(),
+                _makeSpace(),
+                _PoweredByMessage(),
+              ],
+            ),
           )),
     );
   }
@@ -222,20 +226,24 @@ class _homePageState extends State<homePage> {
           _LableText(label),
           Expanded(
             child: TextFormField(
-                decoration: InputDecoration(
-                  labelText: "Enter Your " + label,
-                  border: OutlineInputBorder(),
-                  labelStyle: TextStyle(
-                    color: Colors.white,
-                  ),
+              decoration: InputDecoration(
+                labelText: "Enter Your $label",
+                border: OutlineInputBorder(),
+                labelStyle: TextStyle(
+                  color: Colors.white,
                 ),
-                style: TextStyle(color: Colors.white),
-                controller: _controller,
-                validator: (_input) {
-                  return _input == null || _input.isEmpty
-                      ? 'Please enter your $label'
-                      : null;
-                }),
+              ),
+              style: TextStyle(color: Colors.white),
+              controller: _controller,
+              validator: (_input) {
+                if (_input == null || _input.isEmpty) {
+                  return 'Please enter your $label';
+                } else if (int.tryParse(_input) == null) {
+                  return 'Please enter a valid number for $label';
+                }
+                return null;
+              },
+            ),
           )
         ],
       ),
@@ -276,6 +284,9 @@ class _homePageState extends State<homePage> {
     if (_formkey.currentState?.validate() ?? false) {
       // Process the form data
       print("Form submitted");
+    } else {
+      _changeSizeOfContainer = .75;
+      setState(() {});
     }
   }
 
@@ -287,6 +298,7 @@ class _homePageState extends State<homePage> {
       _selectedBoard = null;
       _rollController.clear();
       _regController.clear();
+      _changeSizeOfContainer = .60;
     });
   }
 }
