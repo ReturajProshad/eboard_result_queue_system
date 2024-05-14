@@ -31,7 +31,7 @@ class _homePageState extends State<homePage> {
     _devicWeight = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
-        title: Center(child: Text("E REsult")),
+        title: Center(child: Text("Education Board Result")),
       ),
       backgroundColor: Color.fromARGB(41, 0, 254, 38),
       body: SingleChildScrollView(
@@ -97,26 +97,54 @@ class _homePageState extends State<homePage> {
             ),
           ),
           child: Column(
+            // mainAxisAlignment: MainAxisAlignment.start,
+            // crossAxisAlignment: CrossAxisAlignment.center,
+            // mainAxisSize: MainAxisSize.max,
             children: [
               _buildDropDownFields("Examination", examination, (_selectedItem) {
                 setState(() {
                   _selectedExamination = _selectedItem;
                 });
               }),
+              _makeSpace(),
               _buildDropDownFields("Year", years, (_InputYear) {
                 setState(() {
                   _selectedYear = _InputYear;
                 });
               }),
+              _makeSpace(),
               _buildDropDownFields("Board", Boards, (_input) {
                 setState(() {
                   _selectedBoard = _input;
                 });
               }),
+              _makeSpace(),
               _buildTextField("Roll", _rollController),
-              _buildTextField("Registration", _regController)
+              _makeSpace(),
+              _buildTextField("Registration", _regController),
+              _makeSpace(),
+              _submitAndResetButton(),
+              _makeSpace(),
+              _PoweredByMessage(),
             ],
           )),
+    );
+  }
+
+  Container _PoweredByMessage() {
+    return Container(
+      height: _deviceHeight * .05,
+      width: _devicWeight * .60,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: Colors.red),
+      ),
+      child: Center(
+        child: Text(
+          "powered By Firebase",
+          style: TextStyle(fontSize: 25, color: Colors.red),
+        ),
+      ),
     );
   }
 
@@ -194,16 +222,71 @@ class _homePageState extends State<homePage> {
           _LableText(label),
           Expanded(
             child: TextFormField(
-              decoration: InputDecoration(
-                  labelText: label, border: OutlineInputBorder()),
-              controller: _controller,
-              validator: (_input) => _input == null || _input.isEmpty
-                  ? 'Please enter your $label'
-                  : null,
-            ),
+                decoration: InputDecoration(
+                  labelText: "Enter Your " + label,
+                  border: OutlineInputBorder(),
+                  labelStyle: TextStyle(
+                    color: Colors.white,
+                  ),
+                ),
+                style: TextStyle(color: Colors.white),
+                controller: _controller,
+                validator: (_input) {
+                  return _input == null || _input.isEmpty
+                      ? 'Please enter your $label'
+                      : null;
+                }),
           )
         ],
       ),
     );
+  }
+
+  Widget _submitAndResetButton() {
+    return Row(
+      children: [
+        SizedBox(
+          width: _devicWeight * .30,
+        ),
+        ElevatedButton(
+          onPressed: () {
+            _submitForm();
+          },
+          child: Text("Submit"),
+        ),
+        SizedBox(
+          width: _devicWeight * .10,
+        ),
+        ElevatedButton(
+            onPressed: () {
+              _resetForm();
+            },
+            child: Text("Reset"))
+      ],
+    );
+  }
+
+  Widget _makeSpace() {
+    return SizedBox(
+      height: _deviceHeight * .01,
+    );
+  }
+
+  void _submitForm() {
+    if (_formkey.currentState?.validate() ?? false) {
+      // Process the form data
+      print("Form submitted");
+    }
+  }
+
+  void _resetForm() {
+    _formkey.currentState?.reset();
+    setState(() {
+      _selectedExamination = null;
+      _selectedYear = null;
+      _selectedBoard = null;
+      _rollController.clear();
+      _regController.clear();
+    });
   }
 }
