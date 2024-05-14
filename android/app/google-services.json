@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "343760011852",
+    "project_id": "eresult-2d8ae",
+    "storage_bucket": "eresult-2d8ae.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:343760011852:android:a5ed122d26c5d0052baae9",
+        "android_client_info": {
+          "package_name": "com.example.eboard_result_queue"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBUCSF90qNpLDw2tRsroj3PeClPodzLBkI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
