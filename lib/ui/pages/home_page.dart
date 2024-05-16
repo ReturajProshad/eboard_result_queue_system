@@ -1,18 +1,24 @@
-import 'package:eboard_result_queue/CustomWidgets/colors_names.dart';
-import 'package:eboard_result_queue/ui/pages/Result_show.dart';
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import 'package:eboard_result_queue/CustomWidgets/colors_names.dart';
+import 'package:eboard_result_queue/ui/pages/Result_show.dart';
+
 class homePage extends StatefulWidget {
-  const homePage({super.key});
+  double deviceHeight;
+  double devicWeight;
+  homePage({
+    Key? key,
+    required this.deviceHeight,
+    required this.devicWeight,
+  }) : super(key: key);
 
   @override
   State<homePage> createState() => _homePageState();
 }
 
 class _homePageState extends State<homePage> {
-  late double _deviceHeight;
-  late double _devicWeight;
   final _formkey = GlobalKey<FormState>();
   late String _selectedExamination;
   late String _selectedBoard;
@@ -28,21 +34,18 @@ class _homePageState extends State<homePage> {
   double _changeSizeOfContainer = .60;
   @override
   void initState() {
-    _deviceHeight = MediaQuery.of(context).size.height;
-    _devicWeight = MediaQuery.of(context).size.width;
-    _changeSizeOfContainer = _deviceHeight < 557
+    _changeSizeOfContainer = widget.deviceHeight < 557
         ? .75
-        : _deviceHeight < 693
+        : widget.deviceHeight < 693
             ? .70
             : .60;
-    // TODO: implement initState
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    print("height=$_deviceHeight");
-    print(_devicWeight);
+    print("height=$widget.deviceHeight");
+    print(widget.devicWeight);
 
     print("sZ=$_changeSizeOfContainer");
 
@@ -59,8 +62,8 @@ class _homePageState extends State<homePage> {
   Widget _homeUI() {
     return Container(
       // padding: EdgeInsets.symmetric(vertical: 20, horizontal: 50),
-      height: _deviceHeight * .90,
-      width: _devicWeight * .95,
+      height: widget.deviceHeight * .90,
+      width: widget.devicWeight * .95,
       color: const Color.fromARGB(113, 6, 0, 0),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -69,7 +72,7 @@ class _homePageState extends State<homePage> {
         children: [
           _titleText(),
           SizedBox(
-            height: _devicWeight * .02,
+            height: widget.devicWeight * .02,
           ),
           _inputForm(),
         ],
@@ -81,9 +84,9 @@ class _homePageState extends State<homePage> {
     return Align(
       alignment: Alignment.topCenter,
       child: Container(
-        padding: EdgeInsets.only(top: _deviceHeight * .03),
-        height: _deviceHeight * .10,
-        width: _devicWeight * .95,
+        padding: EdgeInsets.only(top: widget.deviceHeight * .03),
+        height: widget.deviceHeight * .10,
+        width: widget.devicWeight * .95,
         color: const Color.fromARGB(42, 245, 240, 240),
         child: const Text(
           "Welcome To Your Result Section",
@@ -102,9 +105,9 @@ class _homePageState extends State<homePage> {
     return Align(
       alignment: Alignment.topCenter,
       child: Container(
-          padding: EdgeInsets.only(top: _deviceHeight * .01),
-          height: _deviceHeight * _changeSizeOfContainer,
-          width: _devicWeight * .93,
+          padding: EdgeInsets.only(top: widget.deviceHeight * .01),
+          height: widget.deviceHeight * _changeSizeOfContainer,
+          width: widget.devicWeight * .93,
           decoration: BoxDecoration(
             //color: Color.fromARGB(104, 4, 19, 224),
             borderRadius: BorderRadius.circular(10),
@@ -154,8 +157,8 @@ class _homePageState extends State<homePage> {
 
   Container _PoweredByMessage() {
     return Container(
-      height: _deviceHeight * .05,
-      width: _devicWeight * .60,
+      height: widget.deviceHeight * .05,
+      width: widget.devicWeight * .60,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(20),
         border: Border.all(color: Colors.red),
@@ -216,8 +219,8 @@ class _homePageState extends State<homePage> {
         Center(
           child: Container(
             padding: const EdgeInsets.only(top: 10),
-            width: _devicWeight * .30,
-            height: _deviceHeight * .05,
+            width: widget.devicWeight * .30,
+            height: widget.deviceHeight * .05,
             // color: Colors.white,
             child: Text(
               label,
@@ -270,7 +273,7 @@ class _homePageState extends State<homePage> {
     return Row(
       children: [
         SizedBox(
-          width: _devicWeight * .30,
+          width: widget.devicWeight * .30,
         ),
         ElevatedButton(
           onPressed: () {
@@ -279,7 +282,7 @@ class _homePageState extends State<homePage> {
           child: const Text("Submit"),
         ),
         SizedBox(
-          width: _devicWeight * .10,
+          width: widget.devicWeight * .10,
         ),
         ElevatedButton(
             onPressed: () {
@@ -292,7 +295,7 @@ class _homePageState extends State<homePage> {
 
   Widget _makeSpace() {
     return SizedBox(
-      height: _deviceHeight * .01,
+      height: widget.deviceHeight * .01,
     );
   }
 
@@ -309,11 +312,11 @@ class _homePageState extends State<homePage> {
         selectedYear: _selectedYear,
         rollNo: _rollNo,
         regNo: _regNo,
-        deviceHeight: _deviceHeight,
-        devicWeight: _devicWeight,
+        deviceHeight: widget.deviceHeight,
+        devicWeight: widget.devicWeight,
       ));
     } else {
-      if (_deviceHeight > 693) {
+      if (widget.deviceHeight > 693) {
         setState(() {
           _changeSizeOfContainer = .70;
         });
