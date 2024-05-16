@@ -325,7 +325,7 @@ class _homePageState extends State<homePage> {
             context: context,
             builder: (BuildContext context) {
               return AlertDialog(
-                title: Text(
+                title: const Text(
                     "please Enter a valid Roll and Reg And select a valid option"),
                 actions: [
                   ElevatedButton(
@@ -350,7 +350,11 @@ class _homePageState extends State<homePage> {
       _selectedBoard = "";
       _rollController.clear();
       _regController.clear();
-      _changeSizeOfContainer = .60;
+      _changeSizeOfContainer = widget.deviceHeight < 557
+          ? .75
+          : widget.deviceHeight < 693
+              ? .70
+              : .60;
     });
   }
 }
