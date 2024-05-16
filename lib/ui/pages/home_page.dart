@@ -1,6 +1,7 @@
-import 'package:flutter/foundation.dart';
+import 'package:eboard_result_queue/CustomWidgets/colors_names.dart';
+import 'package:eboard_result_queue/ui/pages/Result_show.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'package:get/get.dart';
 
 class homePage extends StatefulWidget {
   const homePage({super.key});
@@ -13,11 +14,11 @@ class _homePageState extends State<homePage> {
   late double _deviceHeight;
   late double _devicWeight;
   final _formkey = GlobalKey<FormState>();
-  String? _selectedExamination;
-  String? _selectedBoard;
-  String? _selectedYear;
-  String? _rollNo;
-  String? _regNo;
+  late String _selectedExamination;
+  late String _selectedBoard;
+  late String _selectedYear;
+  late String _rollNo;
+  late String _regNo;
   final List<String> examination = ["SSC", "HSC", "Dakhil"];
   final List<String> Boards = ["Dhaka", "Dinajpur", "Rajshahi", "Khulna"];
   final List<String> years =
@@ -26,14 +27,30 @@ class _homePageState extends State<homePage> {
   TextEditingController _regController = TextEditingController();
   double _changeSizeOfContainer = .60;
   @override
-  Widget build(BuildContext context) {
+  void initState() {
     _deviceHeight = MediaQuery.of(context).size.height;
     _devicWeight = MediaQuery.of(context).size.width;
+    _changeSizeOfContainer = _deviceHeight < 557
+        ? .75
+        : _deviceHeight < 693
+            ? .70
+            : .60;
+    // TODO: implement initState
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    print("height=$_deviceHeight");
+    print(_devicWeight);
+
+    print("sZ=$_changeSizeOfContainer");
+
     return Scaffold(
       appBar: AppBar(
-        title: Center(child: Text("Education Board Result")),
+        title: const Center(child: Text("Education Board Result")),
       ),
-      backgroundColor: Color.fromARGB(41, 0, 254, 38),
+      backgroundColor: ColorWidget.instance.scafoldBackColor,
       body: SingleChildScrollView(
           child: Align(alignment: Alignment.topCenter, child: _homeUI())),
     );
@@ -44,7 +61,7 @@ class _homePageState extends State<homePage> {
       // padding: EdgeInsets.symmetric(vertical: 20, horizontal: 50),
       height: _deviceHeight * .90,
       width: _devicWeight * .95,
-      color: Color.fromARGB(113, 6, 0, 0),
+      color: const Color.fromARGB(113, 6, 0, 0),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -54,7 +71,7 @@ class _homePageState extends State<homePage> {
           SizedBox(
             height: _devicWeight * .02,
           ),
-          _inputForm()
+          _inputForm(),
         ],
       ),
     );
@@ -67,7 +84,7 @@ class _homePageState extends State<homePage> {
         padding: EdgeInsets.only(top: _deviceHeight * .03),
         height: _deviceHeight * .10,
         width: _devicWeight * .95,
-        color: Color.fromARGB(42, 245, 240, 240),
+        color: const Color.fromARGB(42, 245, 240, 240),
         child: const Text(
           "Welcome To Your Result Section",
           textAlign: TextAlign.center,
@@ -85,7 +102,7 @@ class _homePageState extends State<homePage> {
     return Align(
       alignment: Alignment.topCenter,
       child: Container(
-          padding: EdgeInsets.only(top: _deviceHeight * .03),
+          padding: EdgeInsets.only(top: _deviceHeight * .01),
           height: _deviceHeight * _changeSizeOfContainer,
           width: _devicWeight * .93,
           decoration: BoxDecoration(
@@ -106,19 +123,19 @@ class _homePageState extends State<homePage> {
                 _buildDropDownFields("Examination", examination,
                     (_selectedItem) {
                   setState(() {
-                    _selectedExamination = _selectedItem;
+                    _selectedExamination = _selectedItem!;
                   });
                 }),
                 _makeSpace(),
                 _buildDropDownFields("Year", years, (_InputYear) {
                   setState(() {
-                    _selectedYear = _InputYear;
+                    _selectedYear = _InputYear!;
                   });
                 }),
                 _makeSpace(),
                 _buildDropDownFields("Board", Boards, (_input) {
                   setState(() {
-                    _selectedBoard = _input;
+                    _selectedBoard = _input!;
                   });
                 }),
                 _makeSpace(),
@@ -143,7 +160,7 @@ class _homePageState extends State<homePage> {
         borderRadius: BorderRadius.circular(20),
         border: Border.all(color: Colors.red),
       ),
-      child: Center(
+      child: const Center(
         child: Text(
           "powered By Firebase",
           style: TextStyle(fontSize: 25, color: Colors.red),
@@ -155,7 +172,7 @@ class _homePageState extends State<homePage> {
   Widget _buildDropDownFields(
       String lable, List<String> items, Function(String?) onChanged) {
     return Padding(
-        padding: EdgeInsets.symmetric(vertical: 2.0),
+        padding: const EdgeInsets.symmetric(vertical: 2.0),
         child: Row(
           // crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -169,15 +186,16 @@ class _homePageState extends State<homePage> {
                 child: DropdownButtonFormField<String>(
                   decoration: InputDecoration(
                     labelText: "Select $lable",
-                    labelStyle: TextStyle(color: Colors.white),
-                    border: OutlineInputBorder(),
+                    labelStyle: const TextStyle(color: Colors.white),
+                    border: const OutlineInputBorder(),
                   ),
                   items: items.map((String value) {
                     return DropdownMenuItem<String>(
                       value: value,
                       child: Text(
                         value,
-                        style: TextStyle(fontSize: 18, color: Colors.white),
+                        style:
+                            const TextStyle(fontSize: 18, color: Colors.white),
                       ),
                     );
                   }).toList(),
@@ -194,13 +212,13 @@ class _homePageState extends State<homePage> {
   Widget _LableText(String label) {
     return Row(
       children: [
-        SizedBox(width: 8),
+        const SizedBox(width: 8),
         Center(
           child: Container(
-            padding: EdgeInsets.only(top: 10),
+            padding: const EdgeInsets.only(top: 10),
             width: _devicWeight * .30,
             height: _deviceHeight * .05,
-            //color: Colors.white,
+            // color: Colors.white,
             child: Text(
               label,
               style: const TextStyle(
@@ -220,33 +238,31 @@ class _homePageState extends State<homePage> {
   }
 
   Widget _buildTextField(String label, TextEditingController _controller) {
-    return Container(
-      child: Row(
-        children: [
-          _LableText(label),
-          Expanded(
-            child: TextFormField(
-              decoration: InputDecoration(
-                labelText: "Enter Your $label",
-                border: OutlineInputBorder(),
-                labelStyle: TextStyle(
-                  color: Colors.white,
-                ),
+    return Row(
+      children: [
+        _LableText(label),
+        Expanded(
+          child: TextFormField(
+            decoration: InputDecoration(
+              labelText: "Enter Your $label",
+              border: const OutlineInputBorder(),
+              labelStyle: const TextStyle(
+                color: Colors.white,
               ),
-              style: TextStyle(color: Colors.white),
-              controller: _controller,
-              validator: (_input) {
-                if (_input == null || _input.isEmpty) {
-                  return 'Please enter your $label';
-                } else if (int.tryParse(_input) == null) {
-                  return 'Please enter a valid number for $label';
-                }
-                return null;
-              },
             ),
-          )
-        ],
-      ),
+            style: const TextStyle(color: Colors.white),
+            controller: _controller,
+            validator: (_input) {
+              if (_input == null || _input.isEmpty) {
+                return 'Please enter your $label';
+              } else if (int.tryParse(_input) == null) {
+                return 'Please enter a valid number for $label';
+              }
+              return null;
+            },
+          ),
+        )
+      ],
     );
   }
 
@@ -260,7 +276,7 @@ class _homePageState extends State<homePage> {
           onPressed: () {
             _submitForm();
           },
-          child: Text("Submit"),
+          child: const Text("Submit"),
         ),
         SizedBox(
           width: _devicWeight * .10,
@@ -269,7 +285,7 @@ class _homePageState extends State<homePage> {
             onPressed: () {
               _resetForm();
             },
-            child: Text("Reset"))
+            child: const Text("Reset"))
       ],
     );
   }
@@ -282,20 +298,53 @@ class _homePageState extends State<homePage> {
 
   void _submitForm() {
     if (_formkey.currentState?.validate() ?? false) {
-      // Process the form data
-      print("Form submitted");
+      setState(() {
+        _rollNo = _rollController.text;
+        _regNo = _regController.text;
+      });
+
+      Get.to(ResultPage(
+        selectedExamination: _selectedExamination,
+        selectedBoard: _selectedBoard,
+        selectedYear: _selectedYear,
+        rollNo: _rollNo,
+        regNo: _regNo,
+        deviceHeight: _deviceHeight,
+        devicWeight: _devicWeight,
+      ));
     } else {
-      _changeSizeOfContainer = .75;
-      setState(() {});
+      if (_deviceHeight > 693) {
+        setState(() {
+          _changeSizeOfContainer = .70;
+        });
+      } else {
+        showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: Text(
+                    "please Enter a valid Roll and Reg And select a valid option"),
+                actions: [
+                  ElevatedButton(
+                    onPressed: () {
+                      _resetForm();
+                      navigator!.pop(context);
+                    },
+                    child: Text("Reset"),
+                  )
+                ],
+              );
+            });
+      }
     }
   }
 
   void _resetForm() {
     _formkey.currentState?.reset();
     setState(() {
-      _selectedExamination = null;
-      _selectedYear = null;
-      _selectedBoard = null;
+      _selectedExamination = "";
+      _selectedYear = "";
+      _selectedBoard = "";
       _rollController.clear();
       _regController.clear();
       _changeSizeOfContainer = .60;

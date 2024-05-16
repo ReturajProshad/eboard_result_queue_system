@@ -1,7 +1,9 @@
 import 'package:eboard_result_queue/firebase_options.dart';
-import 'package:eboard_result_queue/ui/home_page.dart';
+import 'package:eboard_result_queue/ui/pages/Result_show.dart';
+import 'package:eboard_result_queue/ui/pages/home_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get_navigation/get_navigation.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -21,12 +23,9 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
       title: "EBoardRDemo",
-      initialRoute: "home",
-      routes: {
-        "home": (BuildContext context) => homePage(),
-      },
+      home: homePage(),
     );
   }
 }
